@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/burpOverflow/goRecz/diff"
 	"github.com/burpOverflow/goRecz/find"
 	"github.com/burpOverflow/goRecz/pkg/banner"
 	"github.com/burpOverflow/goRecz/pkg/fset"
@@ -24,6 +25,7 @@ func main() {
 	var (
 		findCmd = flag.NewFlagSet("find", flag.ExitOnError)
 		rdlCmd  = flag.NewFlagSet("rdl", flag.ExitOnError)
+		diffCmd = flag.NewFlagSet("diff", flag.ExitOnError)
 	)
 
 	switch os.Args[1] {
@@ -31,6 +33,8 @@ func main() {
 		findHandler(findCmd)
 	case "rdl":
 		rdlHandler(rdlCmd)
+	case "diff":
+		diffHandler(diffCmd)
 	default:
 
 		os.Exit(1)
@@ -76,4 +80,20 @@ func rdlHandler(rdlCmd *flag.FlagSet) {
 		os.Exit(1)
 	}
 	rdl.Handle(filePtr, outPtr, slPtr)
+}
+
+func diffHandler(diffCmd *flag.FlagSet) {
+	var (
+		f1Ptr  = diffCmd.String("f1", "", "first file name")
+		f2Ptr  = diffCmd.String("f2", "", "second file name")
+		outPtr = diffCmd.String("o", "", "output file name")
+	)
+	diffCmd.Parse(os.Args[2:])
+
+	if strings.TrimSpace(*f1Ptr) == "" || strings.TrimSpace(*f2Ptr) == "" {
+		banner.PrintBanner()
+		diffCmd.Usage()
+		os.Exit(1)
+	}
+	diff.Handle(f1Ptr, f2Ptr, outPtr)
 }

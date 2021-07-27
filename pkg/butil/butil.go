@@ -6,6 +6,7 @@ import (
 	"os"
 	"text/tabwriter"
 
+	checkerr "github.com/burpOverflow/goRecz/pkg/checkErr"
 	"github.com/burpOverflow/goRecz/pkg/colors"
 )
 
@@ -49,5 +50,16 @@ func PrintOnConsole(domainSrc map[string][]string, srcPtr bool) {
 		for _, domain := range allDomain {
 			fmt.Println(domain)
 		}
+	}
+}
+
+func SaveArrayOnFile(filename string, arr []string) {
+	file, err := os.Create(filename)
+	checkerr.Check(err)
+	defer file.Close()
+
+	for _, domain := range arr {
+		_, err = file.WriteString(domain + "\n")
+		checkerr.Check(err)
 	}
 }
