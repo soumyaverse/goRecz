@@ -9,7 +9,7 @@
 Now you are ready to go...
 
 #### using go get
-* `go get https://github.com/burpOverflow/goRecz`
+* `go get github.com/burpOverflow/goRecz`
 * binary file `goRecz` stored in `$GOPATH/bin`
 
 ## Information Gathering:
