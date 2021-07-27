@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/burpOverflow/goRecz/pkg/butil"
 )
@@ -21,7 +22,8 @@ func New() *Client {
 	return &Client{}
 }
 
-func (b *Client) GetDomains(domain string) ([]string, error) {
+func (b *Client) GetDomains(domain string, domainChan chan []string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	resp, err := http.Get(fmt.Sprintf("%s/dns?q=%s", BaseUrl, domain))
 	if err != nil {
 		log.Fatal(err)
@@ -30,9 +32,10 @@ func (b *Client) GetDomains(domain string) ([]string, error) {
 	var ret Domains
 	var newDomainList []string
 	var splitDomainList []string
+	// srcKeyPair := make(map[string][]string)
 	if err := json.NewDecoder(resp.Body).Decode(&ret); err != nil {
-		return nil, err
-		// log.Fatal(err)
+		// return nil, err
+		log.Fatal(err)
 	}
 
 	newDomainList = append(newDomainList, ret.FdnsA...)
@@ -45,6 +48,8 @@ func (b *Client) GetDomains(domain string) ([]string, error) {
 	}
 	// fmt.Println(splitDomainList)
 
-	return butil.RemoveDuplicateValuesStr(splitDomainList), nil
+	// return butil.RemoveDuplicateValuesStr(splitDomainList), nil
+	// srcKeyPair["BufferOver"] = butil.RemoveDuplicateValuesStr(splitDomainList)
+	domainChan <- butil.RemoveDuplicateValuesStr(splitDomainList)
 
 }
