@@ -1,6 +1,6 @@
 # goRecz -beta
 
-## INSTALLATION:
+## Installation:
 1. `git clone https://github.com/burpOverflow/goRecz`
 2. `cd goRecz`
 3. `go build` or `go build -ldflags "-s -w"` 
