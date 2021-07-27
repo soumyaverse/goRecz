@@ -1,4 +1,4 @@
-# goRecz -beta
+![logo](https://github.com/burpOverflow/goRecz/blob/master/media/logo.png)
 
 ## Installation:
 
