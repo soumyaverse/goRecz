@@ -45,7 +45,7 @@ func PrintOnConsole(domainSrc map[string][]string, srcPtr bool) {
 		for _, domainList := range domainSrc {
 			allDomain = append(allDomain, domainList...)
 		}
-		allDomain = RemoveDuplicateValuesStr(allDomain)
+		// allDomain = RemoveDuplicateValuesStr(allDomain)
 		for _, domain := range allDomain {
 			fmt.Println(domain)
 		}
