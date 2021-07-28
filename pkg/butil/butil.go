@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"text/tabwriter"
 
 	checkerr "github.com/burpOverflow/goRecz/pkg/checkErr"
@@ -21,6 +22,19 @@ func RemoveDuplicateValuesStr(stringSlice []string) []string {
 		}
 	}
 
+	return list
+}
+
+func RemoveDuplicateValuesStr2(arr []string) []string {
+	domains := make(map[string]bool)
+	list := []string{}
+
+	for _, d := range arr {
+		domains[strings.TrimSpace(d)] = true
+	}
+	for d, _ := range domains {
+		list = append(list, d)
+	}
 	return list
 }
 
@@ -46,7 +60,7 @@ func PrintOnConsole(domainSrc map[string][]string, srcPtr bool) {
 		for _, domainList := range domainSrc {
 			allDomain = append(allDomain, domainList...)
 		}
-		// allDomain = RemoveDuplicateValuesStr(allDomain)
+		allDomain = RemoveDuplicateValuesStr2(allDomain)
 		for _, domain := range allDomain {
 			fmt.Println(domain)
 		}
