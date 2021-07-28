@@ -10,14 +10,24 @@ import (
 	checkerr "github.com/burpOverflow/goRecz/pkg/checkErr"
 )
 
-func Handle(f1Ptr *string, f2Ptr *string, outPtr *string) {
+func Handle(f1Ptr *string, f2Ptr *string, outPtr *string, viz bool) {
 	f1List := getData(*f1Ptr)
 	f2List := getData(*f2Ptr)
 	diff := []string{}
 
-	for _, f1 := range f1List {
-		if !itemExists(f2List, f1) {
-			diff = append(diff, f1)
+	if !viz {
+
+		for _, f1 := range f1List {
+			if !itemExists(f2List, f1) {
+				diff = append(diff, f1)
+			}
+		}
+	}
+	if viz {
+		for _, f1 := range f1List {
+			if itemExists(f2List, f1) {
+				diff = append(diff, f1)
+			}
 		}
 	}
 

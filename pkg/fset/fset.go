@@ -12,6 +12,7 @@ func Usage() {
 	fsu["find"] = "Find subdomains (Subdomain Enumeration)"
 	fsu["rdl"] = "Remove Duplicate Lines"
 	fsu["diff"] = "Different Lines bet two files"
+	fsu["common"] = "Common Lines bet two files"
 
 	fsupprint(fsu)
 
