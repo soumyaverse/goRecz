@@ -17,4 +17,4 @@ Now you are ready to go...
 | Technique | Data Sources |
 | ------------ | ---------- |
 | Certificates | Crtsh |
-| API | BufferOver, Shodan |
+| API | BufferOver, Shodan, HackerTarget |

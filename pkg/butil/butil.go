@@ -46,7 +46,7 @@ func RemoveIndex(s []string, index int) []string {
 }
 
 func PrintOnConsole(domainSrc map[string][]string, srcPtr bool) {
-	// fmt.Println(domainSrc["BufferOver"])
+	// fmt.Println(domainSrc)
 	if srcPtr {
 		w := tabwriter.NewWriter(os.Stdout, 28, 1, 1, ' ', 0)
 		for src, domainList := range domainSrc {
