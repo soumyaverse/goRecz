@@ -1,8 +1,10 @@
 package butil
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 	"text/tabwriter"
@@ -76,4 +78,15 @@ func SaveArrayOnFile(filename string, arr []string) {
 		_, err = file.WriteString(domain + "\n")
 		checkerr.Check(err)
 	}
+}
+
+func FetchJSON(url string, wrapper interface{}) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	dec := json.NewDecoder(resp.Body)
+
+	return dec.Decode(wrapper)
 }

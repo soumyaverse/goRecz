@@ -1,10 +1,8 @@
 package bufferover
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"strings"
 	"sync"
 
@@ -24,19 +22,14 @@ func New() *Client {
 
 func (b *Client) GetDomains(domain string, domainChan chan []string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	resp, err := http.Get(fmt.Sprintf("%s/dns?q=%s", BaseUrl, domain))
-	if err != nil {
+	fetchURL := fmt.Sprintf("%s/dns?q=%s", BaseUrl, domain)
+
+	var ret Domains
+	if err := butil.FetchJSON(fetchURL, &ret); err != nil {
 		log.Fatal(err)
 	}
-	defer resp.Body.Close()
-	var ret Domains
 	var newDomainList []string
 	var splitDomainList []string
-	// srcKeyPair := make(map[string][]string)
-	if err := json.NewDecoder(resp.Body).Decode(&ret); err != nil {
-		// return nil, err
-		log.Fatal(err)
-	}
 
 	newDomainList = append(newDomainList, ret.FdnsA...)
 	newDomainList = append(newDomainList, ret.Rdns...)
