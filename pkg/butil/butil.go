@@ -1,8 +1,10 @@
 package butil
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -122,4 +124,59 @@ func GetTitle(HTMLString string) (title string) {
 			}
 		}
 	}
+}
+
+func GetListOfDataFromAFile(fPtr string) []string {
+	list := []string{}
+	f, err := os.Open(fPtr)
+	checkerr.Check(err)
+
+	scanner := bufio.NewScanner(f)
+
+	for scanner.Scan() {
+		list = append(list, scanner.Text())
+	}
+
+	return list
+}
+
+func GetHTMLData(domain string, mode int) string {
+	var HTMLData string
+
+	if mode == 1 {
+
+		resp, err := http.Get(domain)
+		checkerr.Check(err)
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		checkerr.Check(err)
+		HTMLData = string(body)
+	}
+	if mode == 2 {
+
+		resp, err := doReq("https://" + domain)
+		if err != nil {
+			resp, err = doReq("http://" + domain)
+			// checkerr.Check(err)
+			if err != nil {
+				return ""
+			}
+		}
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		checkerr.Check(err)
+		HTMLData = string(body)
+	}
+	return HTMLData
+}
+
+func doReq(domain string) (*http.Response, error) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", domain, nil)
+	checkerr.Check(err)
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0")
+
+	return client.Do(req)
 }

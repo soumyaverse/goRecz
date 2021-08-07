@@ -13,6 +13,7 @@ func Usage() {
 	fsu["rdl"] = "Remove Duplicate Lines"
 	fsu["diff"] = "Different Lines bet two files"
 	fsu["common"] = "Common Lines bet two files"
+	fsu["ft"] = "Find title from domain list"
 
 	fsupprint(fsu)
 
@@ -24,7 +25,6 @@ func fsupprint(fsu map[string]string) {
 	fmt.Println("")
 
 	fmt.Println("Usage: " + os.Args[0] + " [Subcommand] [Options]")
-	fmt.Println()
 	fmt.Println()
 
 	fmt.Println("Subcommands:")

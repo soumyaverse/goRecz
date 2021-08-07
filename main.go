@@ -9,6 +9,7 @@ import (
 
 	"github.com/burpOverflow/goRecz/diff"
 	"github.com/burpOverflow/goRecz/find"
+	"github.com/burpOverflow/goRecz/ft"
 	"github.com/burpOverflow/goRecz/pkg/banner"
 	"github.com/burpOverflow/goRecz/pkg/fset"
 	"github.com/burpOverflow/goRecz/rdl"
@@ -27,6 +28,7 @@ func main() {
 		rdlCmd    = flag.NewFlagSet("rdl", flag.ExitOnError)
 		diffCmd   = flag.NewFlagSet("diff", flag.ExitOnError)
 		commonCmd = flag.NewFlagSet("common", flag.ExitOnError)
+		ftCmd     = flag.NewFlagSet("ft", flag.ExitOnError) // find title
 	)
 
 	switch os.Args[1] {
@@ -38,6 +40,8 @@ func main() {
 		diffHandler(diffCmd)
 	case "common":
 		commonHandler(commonCmd)
+	case "ft":
+		ftHandler(ftCmd)
 	default:
 
 		os.Exit(1)
@@ -115,4 +119,17 @@ func commonHandler(commonCmd *flag.FlagSet) {
 		os.Exit(1)
 	}
 	diff.Handle(f1Ptr, f2Ptr, outPtr, true)
+}
+
+func ftHandler(ftCmd *flag.FlagSet) {
+	var (
+		dlPtr = ftCmd.String("dl", "", "Domain List")
+	)
+	ftCmd.Parse(os.Args[2:])
+	if strings.TrimSpace(*dlPtr) == "" {
+		banner.PrintBanner()
+		ftCmd.Usage()
+		os.Exit(1)
+	}
+	ft.Handler(dlPtr, &wg)
 }
