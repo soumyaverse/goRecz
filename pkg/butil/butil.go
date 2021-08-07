@@ -11,6 +11,7 @@ import (
 
 	checkerr "github.com/burpOverflow/goRecz/pkg/checkErr"
 	"github.com/burpOverflow/goRecz/pkg/colors"
+	"golang.org/x/net/html"
 )
 
 func RemoveDuplicateValuesStr(stringSlice []string) []string {
@@ -89,4 +90,36 @@ func FetchJSON(url string, wrapper interface{}) error {
 	dec := json.NewDecoder(resp.Body)
 
 	return dec.Decode(wrapper)
+}
+
+func GetTitle(HTMLString string) (title string) {
+	// CREDIT: https://play.golang.org/p/0MRSefJ_-E
+
+	r := strings.NewReader(HTMLString)
+	z := html.NewTokenizer(r)
+
+	var i int
+	for {
+		tt := z.Next()
+		i++
+		if i > 100 {
+			return
+		}
+		switch {
+		case tt == html.ErrorToken:
+			return
+		case tt == html.StartTagToken:
+			t := z.Token()
+			if t.Data != "title" {
+				continue
+			}
+			tt := z.Next()
+
+			if tt == html.TextToken {
+				t := z.Token()
+				title = t.Data
+				return
+			}
+		}
+	}
 }
