@@ -1,5 +1,5 @@
 ![license](https://img.shields.io/badge/license-Apache2-brightgreen)
-![logo](https://github.com/burpOverflow/goRecz/blob/master/media/logo.png)
+![logo](https://github.com/burpOverflow/goRecz/blob/master/media/newlogo.png)
 
 ## Installation:
 
